@@ -141,13 +141,20 @@ def main():
     # We now keep distinct sets of args, for a cleaner separation of concerns.
 
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
-    model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+    model_args, data_args, training_args = parser.parse_args_into_dataclasses(args=[
+        "--output_dir", "output",
+        "--model_type", "bert",
+        "--model_name_or_path", "neuralmind/bert-base-portuguese-cased",
+        "--do_eval",
+        "--mlm",
+        "--line_by_line"
+        ])
 
-    train_dataset = os.path.join(os.path.dirname(__file__), "wikiportuguese", "wiki.train.raw")
-    test_dataset= os.path.join(os.path.dirname(__file__), "wikiportuguese", "wiki.test.raw")
-    
-    data_args.eval_data_file = test_dataset
-    data_args.train_data_file = train_dataset
+    train_dataset_path = os.path.join(os.path.dirname(__file__), "wikiportuguese", "wiki.train.raw")
+    test_dataset_path= os.path.join(os.path.dirname(__file__), "wikiportuguese", "wiki.test.raw")
+
+    data_args.train_data_file = train_dataset_path
+    data_args.eval_data_file = test_dataset_path    
 
     if data_args.eval_data_file is None and training_args.do_eval:        
         raise ValueError(

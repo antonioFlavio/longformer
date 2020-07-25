@@ -141,17 +141,24 @@ def main():
     # We now keep distinct sets of args, for a cleaner separation of concerns.
 
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
+    # neuralmind/bert-base-portuguese-cased
+    # bert-base-cased
+    # bert-base-multilingual-cased
     model_args, data_args, training_args = parser.parse_args_into_dataclasses(args=[
         "--output_dir", "output",
         "--model_type", "bert",
-        "--model_name_or_path", "neuralmind/bert-base-portuguese-cased",
+        "--model_name_or_path", "bert-base-multilingual-cased",
         "--do_eval",
         "--mlm",
         "--line_by_line"
         ])
 
+    #train_dataset_path = os.path.join(os.path.dirname(__file__), "wikiportuguese_line_by_line", "wiki.train.raw")
+    #test_dataset_path= os.path.join(os.path.dirname(__file__), "wikiportuguese_line_by_line", "wiki.test.raw")
     train_dataset_path = os.path.join(os.path.dirname(__file__), "wikiportuguese", "wiki.train.raw")
     test_dataset_path= os.path.join(os.path.dirname(__file__), "wikiportuguese", "wiki.test.raw")
+    #train_dataset_path = os.path.join(os.path.dirname(__file__), "wiki103", "wiki.train.raw")
+    #test_dataset_path= os.path.join(os.path.dirname(__file__), "wiki103", "wiki.test.raw")
 
     data_args.train_data_file = train_dataset_path
     data_args.eval_data_file = test_dataset_path    
@@ -236,6 +243,7 @@ def main():
 
     if data_args.block_size <= 0:
         data_args.block_size = tokenizer.max_len
+        #data_args.block_size = 512
         # Our input block size will be the max possible for the model
     else:
         data_args.block_size = min(data_args.block_size, tokenizer.max_len)

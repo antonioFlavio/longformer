@@ -23,6 +23,7 @@ using a masked language modeling (MLM) loss. XLNet is fine-tuned using a permuta
 import logging
 import math
 import os
+import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -144,10 +145,23 @@ def main():
     # neuralmind/bert-base-portuguese-cased
     # bert-base-cased
     # bert-base-multilingual-cased
+    model_name_or_path = sys.argv[1]
+
+    try:
+        print(model_name_or_path)
+        print("path exists", os.path.exists(model_name_or_path))                
+    except :        
+        print("Caminho não encontrado")
+        print("Caminho atual de excução: ", os.path.dirname(os.path.curdir))
+        raise Exception("Script parado!")
+
+    if model_name_or_path == "":
+        model_name_or_path = "bert-base-multilingual-cased"
+
     model_args, data_args, training_args = parser.parse_args_into_dataclasses(args=[
         "--output_dir", "output",
         "--model_type", "bert",
-        "--model_name_or_path", "bert-base-multilingual-cased",
+        "--model_name_or_path", model_name_or_path,
         "--do_eval",
         "--mlm",
         "--line_by_line"
@@ -292,8 +306,10 @@ def main():
 
         eval_output = trainer.evaluate()
 
-        perplexity = math.exp(eval_output["eval_loss"])
-        result = {"perplexity": perplexity}
+        eval_loss = eval_output["eval_loss"]
+        perplexity = math.exp(eval_loss)
+        bcp = eval_loss/math.log(2)
+        result = {"perplexity": perplexity, "bpc": bcp}
 
         output_eval_file = os.path.join(training_args.output_dir, "eval_results_lm.txt")
         if trainer.is_world_master():

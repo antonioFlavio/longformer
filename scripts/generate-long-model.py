@@ -20,7 +20,7 @@ os.chdir(dname)
 @dataclass
 class ModelArgs:
     attention_window: int = field(default=512, metadata={"help": "Size of attention window"})
-    max_pos: int = field(default=4096, metadata={"help": "Maximum position"})
+    max_pos: int = field(default=1024, metadata={"help": "Maximum position"})
 
 parser = HfArgumentParser((TrainingArguments, ModelArgs,))
 
@@ -35,7 +35,7 @@ training_args, model_args = parser.parse_args_into_dataclasses(look_for_args_fil
     '--logging_steps', '500',
     '--save_steps', '500',
     '--max_grad_norm', '5.0',
-    '--per_gpu_eval_batch_size', '8',
+    '--per_gpu_eval_batch_size', '4',
     '--per_gpu_train_batch_size', '2',  # 32GB gpu with fp32
     #'--device', 'cuda0',  # one GPU
     '--gradient_accumulation_steps', '32',

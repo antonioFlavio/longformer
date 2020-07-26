@@ -48,7 +48,8 @@ training_args, model_args = parser.parse_args_into_dataclasses(look_for_args_fil
 training_args.val_datapath = 'wikiportuguese/wiki.test.raw'
 training_args.train_datapath = 'wikiportuguese/wiki.train.raw'
 
-model_name = "bert-base-multilingual-cased"
+#model_name = "bert-base-multilingual-cased"
+model_name = "neuralmind/bert-base-portuguese-cased"
 model_path = f'{training_args.output_dir}/{model_name}-{model_args.max_pos}'
 
 if not os.path.exists(model_path):

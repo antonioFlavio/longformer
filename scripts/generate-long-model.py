@@ -21,7 +21,7 @@ os.chdir(dname)
 @dataclass
 class ModelArgs:
     attention_window: int = field(default=512, metadata={"help": "Size of attention window"})
-    max_pos: int = field(default=1024, metadata={"help": "Maximum position"})
+    max_pos: int = field(default=4096, metadata={"help": "Maximum position"})
 
 parser = HfArgumentParser((TrainingArguments, ModelArgs,))
 
@@ -48,8 +48,8 @@ training_args, model_args = parser.parse_args_into_dataclasses(look_for_args_fil
 training_args.val_datapath = 'wikiportuguese/wiki.test.raw'
 training_args.train_datapath = 'wikiportuguese/wiki.train.raw'
 
-#model_name = "bert-base-multilingual-cased"
-model_name = "neuralmind/bert-base-portuguese-cased"
+model_name = "bert-base-multilingual-cased"
+#model_name = "neuralmind/bert-base-portuguese-cased"
 model_path = f'{training_args.output_dir}/{model_name}-{model_args.max_pos}'
 
 if not os.path.exists(model_path):
@@ -61,4 +61,4 @@ if not os.path.exists(model_path):
 
 logger.info(f'Converting roberta-base into roberta-base-{model_args.max_pos}')
 model, tokenizer = Util.create_long_model(model_name=model_name,save_model_to=model_path, attention_window=model_args.attention_window, max_pos=model_args.max_pos)
-Util.pretrain_and_evaluate(training_args, model, tokenizer, eval_only=True, model_path=None)
+Util.pretrain_and_evaluate(training_args, model, tokenizer, eval_only=False, model_path=None)

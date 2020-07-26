@@ -145,15 +145,8 @@ def main():
     # neuralmind/bert-base-portuguese-cased
     # bert-base-cased
     # bert-base-multilingual-cased
-    model_name_or_path = sys.argv[1]
-
-    try:
-        print(model_name_or_path)
-        print("path exists", os.path.exists(model_name_or_path))                
-    except :        
-        print("Caminho não encontrado")
-        print("Caminho atual de excução: ", os.path.dirname(os.path.curdir))
-        raise Exception("Script parado!")
+    if len(sys.argv) >= 2:
+        model_name_or_path = sys.argv[1]
 
     if model_name_or_path == "":
         model_name_or_path = "bert-base-multilingual-cased"

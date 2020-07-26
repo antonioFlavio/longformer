@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from transformers import TrainingArguments, HfArgumentParser
 from util import Util
 # Temporário 
-from transformers import RobertaForMaskedLM, RobertaTokenizerFast
+#from transformers import RobertaForMaskedLM, RobertaTokenizerFast
 from transformers import AutoModel, AutoTokenizer
 from transformers import __version__ as teste
 
@@ -44,24 +44,25 @@ training_args, model_args = parser.parse_args_into_dataclasses(look_for_args_fil
     '--do_eval'
 ])
 
-training_args.val_datapath = 'wikitext-103-raw/wiki.valid.raw'
-training_args.train_datapath = 'wikitext-103-raw/wiki.train.raw'
+training_args.val_datapath = 'wikiportuguese/wiki.test.raw'
+training_args.train_datapath = 'wikiportuguese/wiki.train.raw'
 
-bert_br_model = AutoModel.from_pretrained('neuralmind/bert-base-portuguese-cased')
-bert_br_tokenizer = AutoTokenizer.from_pretrained('neuralmind/bert-base-portuguese-cased')
-Util.pretrain_and_evaluate(training_args, bert_br_model, bert_br_tokenizer, eval_only=True, model_path=None, block_size=512) # WORKAROUND TO BERT FROM NEURALMIND.
+model_name = "bert-base-multilingual-cased"
+bert_br_model = AutoModel.from_pretrained(model_name)
+bert_br_tokenizer = AutoTokenizer.from_pretrained(model_name)
+#Util.pretrain_and_evaluate(training_args, bert_br_model, bert_br_tokenizer, eval_only=True, model_path=None, block_size=512) # WORKAROUND TO BERT FROM NEURALMIND.
 
 #roberta_base = RobertaForMaskedLM.from_pretrained('roberta-base')
 #roberta_base_tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base')
-logger.info('Evaluating roberta-base (seqlen: 512) for refernece ...')
+#logger.info('Evaluating roberta-base (seqlen: 512) for refernece ...')
 #Util.pretrain_and_evaluate(training_args, roberta_base, roberta_base_tokenizer, eval_only=True, model_path=None)
 
 #model_path = f'{training_args.output_dir}/roberta-base-{model_args.max_pos}'
-model_path = f'{training_args.output_dir}/bert-br-{model_args.max_pos}'
+model_path = f'{training_args.output_dir}/{model_name}-{model_args.max_pos}'
 
 if not os.path.exists(model_path):
     os.makedirs(model_path)
 
 logger.info(f'Converting roberta-base into roberta-base-{model_args.max_pos}')
-model, tokenizer = Util.create_long_model(save_model_to=model_path, attention_window=model_args.attention_window, max_pos=model_args.max_pos)
+model, tokenizer = Util.create_long_model(model_name=model_name,save_model_to=model_path, attention_window=model_args.attention_window, max_pos=model_args.max_pos)
 

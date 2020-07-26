@@ -13,11 +13,11 @@ logging.basicConfig(level=logging.INFO)
 
 class Util:
     @staticmethod
-    def create_long_model(save_model_to, attention_window, max_pos):
+    def create_long_model(model_name, save_model_to, attention_window, max_pos):
         #model = RobertaForMaskedLM.from_pretrained('roberta-base')
         #tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base', model_max_length=max_pos)
-        model = AutoModel.from_pretrained('neuralmind/bert-base-portuguese-cased')
-        tokenizer = AutoTokenizer.from_pretrained('neuralmind/bert-base-portuguese-cased', model_max_length=max_pos)
+        model = AutoModel.from_pretrained(model_name)
+        tokenizer = AutoTokenizer.from_pretrained(model_name, model_max_length=max_pos)
         config = model.config
 
         # extend position embeddings

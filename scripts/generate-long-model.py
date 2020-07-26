@@ -44,8 +44,8 @@ training_args, model_args = parser.parse_args_into_dataclasses(look_for_args_fil
     '--do_eval'
 ])
 
-training_args.val_datapath = 'wikiportuguese/wiki.test.raw'
-training_args.train_datapath = 'wikiportuguese/wiki.train.raw'
+# training_args.val_datapath = 'wikiportuguese/wiki.test.raw'
+# training_args.train_datapath = 'wikiportuguese/wiki.train.raw'
 
 model_name = "bert-base-multilingual-cased"
 bert_br_model = AutoModel.from_pretrained(model_name)

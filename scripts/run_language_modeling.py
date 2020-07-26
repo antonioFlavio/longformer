@@ -145,7 +145,7 @@ def main():
     # neuralmind/bert-base-portuguese-cased
     # bert-base-cased
     # bert-base-multilingual-cased
-    model_name_or_path = ""
+    model_name_or_path = "scripts/tmp/bert-base-multilingual-cased-4098"
     
     if len(sys.argv) >= 2:
         model_name_or_path = sys.argv[1]

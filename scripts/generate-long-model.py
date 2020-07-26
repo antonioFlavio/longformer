@@ -1,5 +1,6 @@
 import logging
 import os
+import gc
 from dataclasses import dataclass, field
 from transformers import TrainingArguments, HfArgumentParser, BertForMaskedLM, BertTokenizerFast
 from util import Util
@@ -66,6 +67,8 @@ if not os.path.exists(model_path):
 # model = BertForMaskedLM.from_pretrained('bert-base-multilingual-cased')
 # tokenizer = BertTokenizerFast.from_pretrained('bert-base-multilingual-cased')
 # Util.pretrain_and_evaluate(training_args, model, tokenizer, eval_only=True, model_path=None)
+
+gc.collect()
 
 logger.info(f'Converting roberta-base into roberta-base-{model_args.max_pos}')
 model, tokenizer = Util.create_long_model(model_name=model_name,save_model_to=model_path, attention_window=model_args.attention_window, max_pos=model_args.max_pos)

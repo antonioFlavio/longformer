@@ -87,6 +87,7 @@ class Util:
         eval_loss = trainer.evaluate()
         eval_loss = eval_loss['eval_loss']
         logger.info(f'Initial eval bpc: {eval_loss/math.log(2)}')
+        logger.info(f'Initial perplexity: {math.exp(eval_loss)}')
         
         if not eval_only:
             trainer.train(model_path=model_path)
@@ -94,4 +95,5 @@ class Util:
 
             eval_loss = trainer.evaluate()
             eval_loss = eval_loss['eval_loss']
-            logger.info(f'Eval bpc after pretraining: {eval_loss/math.log(2)}')
+            logger.info(f'Eval bpc after pretraining: {eval_loss/math.log(2)}')            
+            logger.info(f'Eval perplexity after pretraining: {math.exp(eval_loss)}')

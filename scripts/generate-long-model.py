@@ -64,10 +64,12 @@ model_path = f'{training_args.output_dir}/{model_name}-{model_args.max_pos}'
 if not os.path.exists(model_path):
     os.makedirs(model_path)
 
-# model = BertForMaskedLM.from_pretrained('bert-base-multilingual-cased')
-# tokenizer = BertTokenizerFast.from_pretrained('bert-base-multilingual-cased')
-# Util.pretrain_and_evaluate(training_args, model, tokenizer, eval_only=True, model_path=None)
+model = BertForMaskedLM.from_pretrained('bert-base-multilingual-cased')
+tokenizer = BertTokenizerFast.from_pretrained('bert-base-multilingual-cased')
+Util.pretrain_and_evaluate(training_args, model, tokenizer, eval_only=True, model_path=None)
 
+model = None
+tokenizer = None
 gc.collect()
 
 logger.info(f'Converting roberta-base into roberta-base-{model_args.max_pos}')
